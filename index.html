@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <title>Graficacion</title>
+    <script src="script.js" defer></script>
+</head>
+<body>
+    <header>
+        <h1>Graficacion</h1>
+    </header>
+    <nav>
+        <button onclick="drawPoint(100, 100)">punto</button>
+        <button onclick="drawLine(100, 100, 200, 200)">linea</button>
+        <button onclick="drawRectangle(100, 100, 200, 200)">rectangulo</button>
+        <button onclick="drawCircle(100, 100, 100, 'green')">circulo</button>
+        <button onclick="drawTriangle(100, 50, 200, 200, 50, 200, 'red', 'black', 2)">triangulo</button>
+        <button onclick="drawPolygon(
+            [
+                { x: 150, y: 50 },
+                { x: 250, y: 120 },
+                { x: 220, y: 220 },
+                { x: 80,  y: 220 },
+                { x: 50,  y: 120 }
+            ],
+            'lightgreen',
+            'green'
+        )">poligono</button>
+        <button onclick="drawText('Hola Canvas', 100, 100)">texto</button>
+        <button onclick="drawImage(100, 100, 200, 200)">imagen</button>
+    </nav>
+    <main>
+        <canvas id="myCanvas" width="600" height="400"></canvas>
+    </main>
+    <footer>
+        <p>Derechos reservados &copy; 2026</p>
+        <p>Tecnologico de Tlajomulco</p>
+        <p>Materia: Graficacion</p>
+        <p>Profesor: Jose Angel Torres Rangel</p>
+    </footer>
+</body>
+</html>
