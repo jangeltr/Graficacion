@@ -143,20 +143,68 @@ function drawStar() {
 
 //Funcion para dibujar un circulo con la formula matematica de la circunferencia
 function drawCircleWithMath() {
+    const xCenter = canvas.width / 2;
+    const yCenter = canvas.height / 2;
+    const x = parseInt(document.getElementById('x').value) + xCenter;
+    let y = parseInt(document.getElementById('y').value);
+    y*=-1;
+    y+=yCenter;
+    const radius = parseInt(document.getElementById('radius').value);
     for (let i = 0; i < 360; i+=10) {
-        drawLineFromCircleWithDegrees(i, 'red', 2);
+        drawLineFromCircleWithDegrees(i, x, y, radius, 'red', 2);
     }
 }
 
 //Funcion para dibujar una linea del circulo con la formula matematica de la circunferencia usando numero de grados para el angulo
-function drawLineFromCircleWithDegrees(degrees,color = 'red', width = 2) {
-    const xCenter = canvas.width / 2;
-    const yCenter = canvas.height / 2;
-    const x = parseInt(document.getElementById('x').value) + xCenter;
-    const y = parseInt(document.getElementById('y').value) + yCenter;
-    const radius = parseInt(document.getElementById('radius').value);
+function drawLineFromCircleWithDegrees(degrees, x, y, radius, color = 'red', width = 2) {
+    //Dibuja una linea desde el centro del circulo hasta el punto en el circulo
     const angle = degrees * 2 * Math.PI / 360;
     const x1 = x + radius * Math.cos(angle);
     const y1 = y + radius * Math.sin(angle);
     drawLine(x, y, x1, y1, color, width);
+    //Dibuja una linea del punto de la circunferencia hasta el siguiente punto de la circunferencia
+    const x2 = x + radius * Math.cos(angle + 10 * 2 * Math.PI / 360);
+    const y2 = y + radius * Math.sin(angle + 10 * 2 * Math.PI / 360);
+    drawLine(x1, y1, x2, y2, color, width);
+}
+
+let clockInterval = null;
+function drawClock() {
+    //Muestra el reloj en el centro del canvas
+    const xCenter = canvas.width / 2;
+    const yCenter = canvas.height / 2;
+    const width  = canvas.width;
+    const height = canvas.height;
+    const radiusSeconds = width / 2-30;
+    const radiusMinutes = width / 2-75;
+    const widthLine = 2;
+    const x = xCenter;
+    const y = yCenter;
+    const img = new Image();
+    img.src = './images/reloj2.jpg';
+    img.onload = () => {
+        let degreesSeconds = 270;
+        let degreesMinutes = 270;
+        clockInterval = setInterval(() => {
+            ctx.drawImage(img, xCenter - width / 2, yCenter - height / 2, width, height);
+            angleSeconds = degreesSeconds * 2 * Math.PI / 360;
+            x1 = x + radiusSeconds * Math.cos(angleSeconds);
+            y1 = y + radiusSeconds * Math.sin(angleSeconds);
+            drawLine(x, y, x1, y1, 'green', widthLine);
+        
+            angleMinutes = degreesMinutes * 2 * Math.PI / 360;
+            x1 = x + radiusMinutes * Math.cos(angleMinutes);
+            y1 = y + radiusMinutes * Math.sin(angleMinutes);
+            drawLine(x, y, x1, y1, "red", 4);
+
+            degreesSeconds+=6;
+            if (degreesSeconds == 270) degreesMinutes += 6;
+            if (degreesSeconds == 360) degreesSeconds = 0;
+            if (degreesMinutes == 360) degreesMinutes = 0;
+        }, 1000);
+    }
+}
+
+function stopClock() {
+    clearInterval(clockInterval);
 }
