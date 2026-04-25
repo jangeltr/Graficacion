@@ -124,7 +124,9 @@ function drawLineFromAtoB() {
     drawLine(xCenter + x1, yCenter + y1, xCenter + x2, yCenter + y2);
 }
 
+let puntosStar = [];
 function drawStar() {
+    dibujarPlanoCartesiano();
     const xCenter = canvas.width / 2;
     const yCenter = canvas.height / 2;
     const height = canvas.height;
@@ -141,6 +143,10 @@ function drawStar() {
     }
 }
 
+function rotateStar() {
+    dibujarPlanoCartesiano();
+
+}
 //Funcion para dibujar un circulo con la formula matematica de la circunferencia
 function drawCircleWithMath() {
     const xCenter = canvas.width / 2;
@@ -207,4 +213,17 @@ function drawClock() {
 
 function stopClock() {
     clearInterval(clockInterval);
+}
+
+function drawSineWave() {
+    const xCenter = canvas.width / 2;
+    const yCenter = canvas.height / 2;
+    const frequency = parseInt(document.getElementById('frequency').value);
+    const amplitude = parseInt(document.getElementById('amplitude').value);
+    const phase = parseInt(document.getElementById('phase').value);
+    for (let i = 0; i < canvas.width; i+=5) {
+        const x = i;
+        const y = yCenter + amplitude * Math.sin(frequency * x + phase);
+        drawPoint(x, y);
+    }
 }

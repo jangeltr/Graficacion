@@ -46,6 +46,7 @@
         <div>
             <label>Estrella de 4 puntas</label>
             <button onclick="drawStar()">Dibujar</button>
+            <button onclick="rotateStar()">Rotar</button>
         </div>
         <div>
             <label>circulo</label>
@@ -58,6 +59,13 @@
             <label for="">Dibujar Reloj</label>
             <button onclick="drawClock()">Dibujar</button>
             <button onclick="stopClock()">Detener</button>
+        </div>
+        <div>
+            <label for="">Dibujar una onda senoidal</label>
+            <input type="text" id="frequency" placeholder="Frecuencia" value="10">
+            <input type="text" id="amplitude" placeholder="Amplitud" value="100">
+            <input type="text" id="phase" placeholder="Fase" value="15">
+            <button onclick="drawSineWave()">Dibujar</button>
         </div>
     </nav>
     <main>
