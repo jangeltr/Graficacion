@@ -124,28 +124,60 @@ function drawLineFromAtoB() {
     drawLine(xCenter + x1, yCenter + y1, xCenter + x2, yCenter + y2);
 }
 
-let puntosStar = [];
-function drawStar() {
-    dibujarPlanoCartesiano();
-    const xCenter = canvas.width / 2;
-    const yCenter = canvas.height / 2;
-    const height = canvas.height;
-    const width = canvas.width;
-    for (let i = 10; i < 260; i+=10) {
-        //Lineas del cuadrante inferior derecho
-        drawLine(xCenter+i, yCenter, xCenter, height - i)
-        //Lineas del cuadrante inferior izquierdo
-        drawLine(xCenter-i, yCenter, xCenter, height - i)
-        //Lineas del cuadrante superior derecho
-        drawLine(xCenter+i, yCenter, xCenter, 0 + i) 
-        //Lineas del cuadrante superior izquierdo
-        drawLine(xCenter-i, yCenter, xCenter, 0 + i)
+let punto = {x: 0, y: 0};
+let puntosEjeX = [];
+let puntosEjeY = [];
+function initPuntos() {
+    for (let i = 0; i < 51; i++) {
+        puntosEjeX.push({x: i*10, y: 250});
+        puntosEjeY.push({x: 250, y: i*10});
     }
+}
+initPuntos();
+function drawStar() {
+    clearCanvas();
+    dibujarPlanoCartesiano();
+    for (let i = 0; i < 26; i++) {
+        //Lineas del cuadrante superior derecho
+        drawLine(puntosEjeY[i].x, puntosEjeY[i].y, puntosEjeX[25+i].x, puntosEjeX[25+i].y)
+        //Lineas del cuadrante inferior derecho
+        drawLine(puntosEjeX[25+i].x, puntosEjeX[25+i].y, puntosEjeY[50-i].x, puntosEjeY[50-i].y)
+        //Lineas del cuadrante inferior izquierdo
+        drawLine(puntosEjeX[i].x, puntosEjeX[i].y, puntosEjeY[25+i].x, puntosEjeY[25+i].y) 
+        //Lineas del cuadrante superior izquierdo
+        drawLine(puntosEjeX[i].x, puntosEjeX[i].y, puntosEjeY[25-i].x, puntosEjeY[25-i].y)
+    }
+}
+
+function RotateStarOnZ(centroX=250, centroY=250, angle) {
+    let grados = angle * Math.PI / 180;
+    let puntosEjeXRotados = [];
+    let puntosEjeYRotados = [];
+    const cos = Math.cos(grados);
+    const sin = Math.sin(grados);
+    //Rotacion de los puntos del eje X
+    for (let i = 0; i < 51; i++) {
+        let x = puntosEjeX[i].x - centroX;
+        let y = puntosEjeX[i].y - centroY;
+        let xRot = x * cos - y * sin;
+        let yRot = x * sin + y * cos;
+        puntosEjeXRotados.push({x: xRot + centroX, y: yRot + centroY})
+    }
+    //Rotacion de los puntos del eje Y
+    for (let i = 0; i < 51; i++) {
+        let x = puntosEjeY[i].x - centroX;
+        let y = puntosEjeY[i].y - centroY;
+        let xRot = x * cos - y * sin;
+        let yRot = x * sin + y * cos;
+        puntosEjeYRotados.push({x: xRot + centroX, y: yRot + centroY})
+    }
+    puntosEjeX=puntosEjeXRotados;
+    puntosEjeY=puntosEjeYRotados;
+    drawStar();
 }
 
 function rotateStar() {
     dibujarPlanoCartesiano();
-
 }
 //Funcion para dibujar un circulo con la formula matematica de la circunferencia
 function drawCircleWithMath() {
@@ -227,3 +259,25 @@ function drawSineWave() {
         drawPoint(x, y);
     }
 }
+
+
+
+
+/* function rotarPuntoRespectoCentro(punto, centro, angulo) {
+    // trasladar al origen
+    let x = punto.x - centro.x;
+    let y = punto.y - centro.y;
+  
+    // rotar
+    let cos = Math.cos(angulo);
+    let sin = Math.sin(angulo);
+  
+    let xRot = x * cos - y * sin;
+    let yRot = x * sin + y * cos;
+  
+    // regresar
+    return {
+      x: xRot + centro.x,
+      y: yRot + centro.y
+    };
+} */
