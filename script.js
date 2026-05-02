@@ -124,13 +124,13 @@ function drawLineFromAtoB() {
     drawLine(xCenter + x1, yCenter + y1, xCenter + x2, yCenter + y2);
 }
 
-let punto = {x: 0, y: 0};
+let punto = {x: 0, y: 0, z:0};
 let puntosEjeX = [];
 let puntosEjeY = [];
 function initPuntos() {
     for (let i = 0; i < 51; i++) {
-        puntosEjeX.push({x: i*10, y: 250});
-        puntosEjeY.push({x: 250, y: i*10});
+        puntosEjeX.push({x: i*10, y: 250, z: 0});
+        puntosEjeY.push({x: 250, y: i*10, z: 0});
     }
 }
 initPuntos();
@@ -149,7 +149,7 @@ function drawStar() {
     }
 }
 
-function RotateStarOnZ(centroX=250, centroY=250, angle) {
+function RotateStarOnZ(centroX=250, centroY=250, centroZ=0, angle) {
     let grados = angle * Math.PI / 180;
     let puntosEjeXRotados = [];
     let puntosEjeYRotados = [];
@@ -161,7 +161,8 @@ function RotateStarOnZ(centroX=250, centroY=250, angle) {
         let y = puntosEjeX[i].y - centroY;
         let xRot = x * cos - y * sin;
         let yRot = x * sin + y * cos;
-        puntosEjeXRotados.push({x: xRot + centroX, y: yRot + centroY})
+        let zRot = puntosEjeX[i].z;
+        puntosEjeXRotados.push({x: xRot + centroX, y: yRot + centroY, z: zRot + centroZ});
     }
     //Rotacion de los puntos del eje Y
     for (let i = 0; i < 51; i++) {
@@ -169,16 +170,56 @@ function RotateStarOnZ(centroX=250, centroY=250, angle) {
         let y = puntosEjeY[i].y - centroY;
         let xRot = x * cos - y * sin;
         let yRot = x * sin + y * cos;
-        puntosEjeYRotados.push({x: xRot + centroX, y: yRot + centroY})
+        let zRot = puntosEjeY[i].z;
+        puntosEjeYRotados.push({x: xRot + centroX, y: yRot + centroY, z: zRot + centroZ});
     }
     puntosEjeX=puntosEjeXRotados;
     puntosEjeY=puntosEjeYRotados;
     drawStar();
 }
 
-function rotateStar() {
-    dibujarPlanoCartesiano();
+function RotateStarOnX(centroX=250, centroY=250, centroZ=0, angle) {
+    let grados = angle * Math.PI / 180;
+    let puntosEjeYRotados = [];
+    const cos = Math.cos(grados);
+    const sin = Math.sin(grados);
+    //Rotacion de los puntos del eje Y
+    for (let i = 0; i < 51; i++) {
+        let x = puntosEjeY[i].x - centroX;
+        let y = puntosEjeY[i].y - centroY;
+        let z = puntosEjeY[i].z - centroZ;
+        
+        let xRot = x;
+        let yRot = y * cos - z * sin;
+        let zRot = y * sin + z * cos;
+
+        puntosEjeYRotados.push({x: xRot + centroX, y: yRot + centroY, z: zRot + centroZ})
+    }
+    puntosEjeY=puntosEjeYRotados;
+    drawStar();
 }
+
+function RotateStarOnY(centroX=250, centroY=250, centroZ=0, angle) {
+    let grados = angle * Math.PI / 180;
+    let puntosEjeXRotados = [];
+    const cos = Math.cos(grados);
+    const sin = Math.sin(grados);
+    //Rotacion de los puntos del eje Y
+    for (let i = 0; i < 51; i++) {
+        let x = puntosEjeX[i].x - centroX;
+        let y = puntosEjeX[i].y - centroY;
+        let z = puntosEjeX[i].z - centroZ;
+        
+        let yRot = y;
+        let xRot = x * cos + z * sin;
+        let zRot = -x * sin + z * cos;
+
+        puntosEjeXRotados.push({x: xRot + centroX, y: yRot + centroY, z: zRot + centroZ})
+    }
+    puntosEjeX=puntosEjeXRotados;
+    drawStar();
+}
+
 //Funcion para dibujar un circulo con la formula matematica de la circunferencia
 function drawCircleWithMath() {
     const xCenter = canvas.width / 2;
